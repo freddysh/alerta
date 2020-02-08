@@ -85,6 +85,37 @@ function borrar_sistema(id,nombre){
         }
       })
 }
+function mostrar_sistemas(planta_id,origen){
+    // alert('hola:'+departamento_id);
+    console.log('planta:'+planta_id);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        if(origen=='nuevo'){
+            $.ajax({
+                type:'POST',
+                url:'../sistema/mostrar-sistemas',
+                data:{planta_id:planta_id},
+                success:function(data){
+                    $("select[name='sistema_id'").html('');
+                    $("select[name='sistema_id'").html(data.options);
+                }
+            });
+        }
+        else if(origen=='editar'){
+            $.ajax({
+                type:'POST',
+                url:'../../sistema/mostrar-sistemas',
+                data:{planta_id:planta_id},
+                success:function(data){
+                    $("select[name='sistema_id'").html('');
+                    $("select[name='sistema_id'").html(data.options);
+                }
+            });
+        }
+}
 
 /*
  * Toastr

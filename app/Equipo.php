@@ -12,4 +12,8 @@ class Equipo extends Model
     {
         return $this->belongsTo(Sistema::class, 'sistema_id');
     }
+    public function componentes()
+    {
+        return $this->hasMany(Componente::class, 'equipo_id');
+    }
 }

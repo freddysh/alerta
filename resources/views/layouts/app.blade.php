@@ -127,8 +127,8 @@
                         <li class="@if(url()->current()==route('sistema')||url()->current()==route('sistema.create')||url()->current()==route('sistema.edit',$id)) active @endif">
                             <a href="{{ route('sistema') }}"><i class="fas fa-project-diagram"></i> SISTEMA</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fas fa-hdd"></i> EQUIPO</a>
+                        <li class="@if(url()->current()==route('equipo')||url()->current()==route('equipo.create')||url()->current()==route('equipo.edit',$id)) active @endif">
+                            <a href="{{ route('equipo') }}"><i class="fas fa-hdd"></i> EQUIPO</a>
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-puzzle-piece"></i> COMPONENTE</a>

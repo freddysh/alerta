@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\componente;
 use App\Equipo;
 use App\Planta;
 use App\Sistema;
 use Illuminate\Http\Request;
 
-class SistemaController extends Controller
+class EquipoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +18,10 @@ class SistemaController extends Controller
     public function index()
     {
         //
-
-        $sistemas=Sistema::all();
-        return view('admin.sistema.index',compact('sistemas'));
+        $equipos=Equipo::all();
+        $plantas=Planta::get();
+        $sistemas=Sistema::get();
+        return view('admin.equipo.index',compact('equipos','plantas','sistemas'));
     }
 
     /**
@@ -31,7 +33,9 @@ class SistemaController extends Controller
     {
         //
         $plantas=Planta::all();
-        return view('admin.sistema.create',compact('plantas'));
+        $planta=Planta::all()->first();
+        $sistemas=Sistema::where('planta_id',$planta->id)->get();
+        return view('admin.equipo.create',compact('plantas','sistemas'));
     }
 
     /**
@@ -44,14 +48,17 @@ class SistemaController extends Controller
     {
         //
         $planta_id=$request->input('planta_id');
+        $sistema_id=$request->input('sistema_id');
         $nombre=$request->input('nombre');
-        $existe_nombre=Sistema::where('nombre',$nombre)->count();
+        $existe_nombre=Equipo::where('planta_id',$planta_id)
+                        ->where('sistema_id',$sistema_id)->where('nombre',$nombre)->count();
         if($existe_nombre>0)
-            return redirect()->back()->withInput($request->all())->with(['warning'=>'El sistema ya existe.']);
-        $oSistema = new Sistema();
-        $oSistema->nombre=$nombre;
-        $oSistema->planta_id=$planta_id;
-        $oSistema->save();
+            return redirect()->back()->withInput($request->all())->with(['warning'=>'El equipo ya existe.']);
+        $oEquipo = new Equipo();
+        $oEquipo->nombre=$nombre;
+        $oEquipo->sistema_id=$sistema_id;
+        $oEquipo->planta_id=$planta_id;
+        $oEquipo->save();
         return redirect()->back()->with(['success'=>'Datos guardados correctamente.']);
     }
 
@@ -77,8 +84,9 @@ class SistemaController extends Controller
         //
 
         $plantas=Planta::all();
-        $sistema=Sistema::findOrfail($id);
-        return view('admin.sistema.edit',compact('plantas','sistema','id'));
+        $sistemas=Sistema::all();
+        $equipo=Equipo::findOrfail($id);
+        return view('admin.equipo.edit',compact('plantas','sistemas','equipo','id'));
     }
 
     /**
@@ -91,12 +99,15 @@ class SistemaController extends Controller
     public function update(Request $request, $id)
     {
         //
+
         $planta_id=$request->input('planta_id');
+        $sistema_id=$request->input('sistema_id');
         $nombre=$request->input('nombre');
-        $oPlanta = Sistema::findOrfail($id);
-        $oPlanta->nombre=$nombre;
-        $oPlanta->planta_id=$planta_id;
-        $oPlanta->save();
+        $oEquipo = Equipo::findOrfail($id);
+        $oEquipo->nombre=$nombre;
+        $oEquipo->sistema_id=$sistema_id;
+        $oEquipo->planta_id=$planta_id;
+        $oEquipo->save();
         return redirect()->back()->with(['success'=>'Datos guardados correctamente.']);
     }
 
@@ -108,16 +119,17 @@ class SistemaController extends Controller
      */
     public function destroy($id)
     {
-         // preguntamos si existe en otras tablas
-         $existeSistemaEquipo=Equipo::where('sistema_id',$id)->get();
-         if($existeSistemaEquipo->count()>0){
+        // preguntamos si existe en otras tablas
+         $existeComponenteEquipo=componente::where('equipo_id',$id)->get();
+         if($existeComponenteEquipo->count()>0){
              return response()->json([
                  'codigo' => '2',
-                 'mensaje' => 'El sistema esta siendo usado en registros de equipo, primero borre los registros asociados.'
+                 'mensaje' => 'El equipo esta siendo usado en registros de componente, primero borre los registros asociados.'
              ]);
          }
-         $oSistema=Sistema::findOrfail($id);
-         $rpt=$oSistema->delete();
+
+         $oEquipo=Equipo::findOrfail($id);
+         $rpt=$oEquipo->delete();
          if($rpt==1){
              return response()->json([
                  'codigo' => '1',
@@ -129,14 +141,5 @@ class SistemaController extends Controller
                  'mensaje' => 'Error al borrar los datos.'
              ]);
          }
-    }
-
-    public function mostrar_sistemas(Request $request){
-        $planta_id=$request->planta_id;
-        if($request->ajax()){
-            $sistemas =Sistema::where('planta_id',$planta_id)->get();
-            $data = view('admin.sistema.mostrar-sistemas-ajax',compact('sistemas'))->render();
-            return \Response::json(['options'=>$data]);
-        }
     }
 }

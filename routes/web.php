@@ -32,3 +32,11 @@ Route::post('/home/sistema/store', 'SistemaController@store')->name('sistema.sto
 Route::get('/home/sistema/edit/{id}', 'SistemaController@edit')->name('sistema.edit');
 Route::put('/home/sistema/update/{id}', 'SistemaController@update')->name('sistema.update');
 Route::get('/home/sistema/destroy/{id}', 'SistemaController@destroy')->name('sistema.destroy');
+Route::post('/home/sistema/mostrar-sistemas', 'SistemaController@mostrar_sistemas')->name('sistema.mostrar-sistemas');
+
+Route::get('/home/equipo', 'EquipoController@index')->name('equipo');
+Route::get('/home/equipo/create', 'EquipoController@create')->name('equipo.create');
+Route::post('/home/equipo/store', 'EquipoController@store')->name('equipo.store');
+Route::get('/home/equipo/edit/{id}', 'EquipoController@edit')->name('equipo.edit');
+Route::put('/home/equipo/update/{id}', 'EquipoController@update')->name('equipo.update');
+Route::get('/home/equipo/destroy/{id}', 'EquipoController@destroy')->name('equipo.destroy');
