@@ -159,3 +159,35 @@ function borrar_equipo(id,nombre){
         }
       })
 }
+
+function mostrar_equipos(sistema_id,origen){
+    // alert('hola:'+departamento_id);
+    console.log('planta:'+sistema_id);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        if(origen=='nuevo'){
+            $.ajax({
+                type:'POST',
+                url:'../equipo/mostrar-equipos',
+                data:{sistema_id:sistema_id},
+                success:function(data){
+                    $("select[name='equipo_id'").html('');
+                    $("select[name='equipo_id'").html(data.options);
+                }
+            });
+        }
+        else if(origen=='editar'){
+            $.ajax({
+                type:'POST',
+                url:'../../equipo/mostrar-equipos',
+                data:{sistema_id:sistema_id},
+                success:function(data){
+                    $("select[name='equipo_id'").html('');
+                    $("select[name='equipo_id'").html(data.options);
+                }
+            });
+        }
+}

@@ -40,3 +40,16 @@ Route::post('/home/equipo/store', 'EquipoController@store')->name('equipo.store'
 Route::get('/home/equipo/edit/{id}', 'EquipoController@edit')->name('equipo.edit');
 Route::put('/home/equipo/update/{id}', 'EquipoController@update')->name('equipo.update');
 Route::get('/home/equipo/destroy/{id}', 'EquipoController@destroy')->name('equipo.destroy');
+Route::post('/home/equipo/mostrar-equipos', 'EquipoController@mostrar_equipos')->name('equipo.mostrar-equipos');
+
+Route::get('/home/componente', 'ComponenteController@index')->name('componente');
+Route::get('/home/componente/create', 'ComponenteController@create')->name('componente.create');
+Route::post('/home/componente/store', 'ComponenteController@store')->name('componente.store');
+Route::get('/home/componente/edit/{id}', 'ComponenteController@edit')->name('componente.edit');
+Route::put('/home/componente/update/{id}', 'ComponenteController@update')->name('componente.update');
+Route::get('/home/componente/destroy/{id}', 'ComponenteController@destroy')->name('componente.destroy');
+
+Route::get('/home/lectura', 'LecturaController@index')->name('lectura');
+Route::get('/home/lectura/{id}/show', 'LecturaController@show')->name('lectura.mostrar');
+Route::post('/home/lectura/{id}/store', 'LecturaController@store')->name('lectura.store');
+Route::post('/home/lectura/buscar', 'LecturaController@buscar')->name('lectura.buscar');

@@ -130,11 +130,12 @@
                         <li class="@if(url()->current()==route('equipo')||url()->current()==route('equipo.create')||url()->current()==route('equipo.edit',$id)) active @endif">
                             <a href="{{ route('equipo') }}"><i class="fas fa-hdd"></i> EQUIPO</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fas fa-puzzle-piece"></i> COMPONENTE</a>
+
+                        <li class="@if(url()->current()==route('componente')||url()->current()==route('componente.create')||url()->current()==route('componente.edit',$id)) active @endif">
+                            <a href="{{ route('componente') }}"><i class="fas fa-puzzle-piece"></i> COMPONENTE</a>
                         </li>
-                        <li>
-                            <a href="#"><i class="fas fa-clipboard"></i> LECTURA</a>
+                        <li class="@if(url()->current()==route('lectura')) active @endif">
+                            <a href="{{ route('lectura') }}"><i class="fas fa-clipboard"></i> LECTURA</a>
                         </li>
                     </ul>
                 </nav>

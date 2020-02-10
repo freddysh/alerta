@@ -142,4 +142,12 @@ class EquipoController extends Controller
              ]);
          }
     }
+    public function mostrar_equipos(Request $request){
+        $sistema_id=$request->sistema_id;
+        if($request->ajax()){
+            $equipos =Equipo::where('sistema_id',$sistema_id)->get();
+            $data = view('admin.equipo.mostrar-equipos-ajax',compact('equipos'))->render();
+            return \Response::json(['options'=>$data]);
+        }
+    }
 }

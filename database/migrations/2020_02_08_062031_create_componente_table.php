@@ -20,7 +20,7 @@ class CreateComponenteTable extends Migration
             $table->string('codigo_componente');
             $table->string('acometida_alimentador');
             $table->string('primera_lectura');
-            $table->string('segunda-lectura');
+            $table->string('segunda_lectura');
             $table->integer('planta_id')->nullable(true)->comment('id de la planta al que pertenece');
             $table->integer('sistema_id')->nullable(true)->comment('id del sistema al que pertenece');
             $table->integer('equipo_id')->nullable(true)->comment('id del sistema al que pertenece');
