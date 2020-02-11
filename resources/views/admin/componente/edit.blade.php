@@ -92,6 +92,7 @@
                     </div>
                     <div class="col-12">
                         <div class="visible-print text-center">
+                            {{-- {!! QrCode::size(300)->generate(route('lectura.mostrar', base64_encode($componente->id))); !!} --}}
                             {!! QrCode::size(300)->generate(route('lectura.mostrar', base64_encode($componente->id))); !!}
                             <p>Escanéame para mostrar los datos del componente y sus lecturas.</p>
                         </div>

@@ -174,7 +174,7 @@
                                     @endphp
                                         <tr id="lista_{{ $lectura->id }}">
                                             <td>{{ $i }}</td>
-                                            <td>{{ $lectura->rango_lectura }}</td>
+                                            <td>01-{{ explode('-',$lectura->rango_lectura)[1] }}-{{ $lectura->anio }}</td>
                                             <td>{{ fecha_peru($lectura->fecha_lectura) }}</td>
                                             <td>{{ $lectura->i_r }}</td>
                                             <td>{{ $lectura->i_s }}</td>
@@ -186,7 +186,12 @@
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <h4>GRAFICA</h4>
-
+                            <div id="temps_div"></div>
+                            @php
+                                // \Lava::render('LineChart', 'Temps', 'temps_div')
+                            @endphp
+                            {{--  // With Blade Templates  --}}
+                            @linechart('Temps', 'temps_div')
                         </div>
                     </div>
                 </div>

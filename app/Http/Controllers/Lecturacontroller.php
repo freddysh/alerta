@@ -8,6 +8,7 @@ use App\Lectura;
 use App\Planta;
 use App\Sistema;
 use Carbon\Carbon;
+use Khill\Lavacharts\Lavacharts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -100,6 +101,33 @@ class Lecturacontroller extends Controller
         $sistema=Sistema::where('id',$equipo->sistema_id)->first();
         $planta=Planta::where('id',$sistema->planta_id)->first();
         $lecturas=Lectura::where('componente_id',$id)->get();
+        //  $lava = new Lavacharts;
+        $temperatures = \Lava::DataTable();
+
+        $temperatures->addDateColumn('Fecha')
+                    ->addNumberColumn('IR')
+                    ->addNumberColumn('IS')
+                    ->addNumberColumn('IT')
+                    ->setTimezone('America/Lima');
+
+        foreach($lecturas as $lectura){
+            $fecha=$lectura->anio.'-'.explode('-',$lectura->rango_lectura)[1].'-01';
+            $temperatures->addRow([$fecha,  $lectura->i_r, $lectura->i_s, $lectura->i_t]);
+        }
+
+                    // ->addRow(['2017-10-01',  168, 165, 161])
+                    // ->addRow(['2018-04-01',  168, 162, 155])
+                    // ->addRow(['2018-10-01',  172, 162, 152])
+                    // ->addRow(['2019-04-01',  161, 154, 147])
+                    // ->addRow(['2019-10-01',  161, 154, 147]);
+
+        \Lava::LineChart('Temps', $temperatures, [
+            'title' => 'Todas las lecturas',
+            'animation' => [
+                'startup' => true,
+                'easing' => 'inAndOut'
+            ]
+        ]);
         return view('admin.lectura.show',compact('componente','equipo','sistema','planta','lecturas','id'));
 
     }
