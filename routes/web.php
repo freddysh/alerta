@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -53,3 +53,7 @@ Route::get('/home/lectura', 'LecturaController@index')->name('lectura');
 Route::get('/home/lectura/{id}/show', 'LecturaController@show')->name('lectura.mostrar');
 Route::post('/home/lectura/{id}/store', 'LecturaController@store')->name('lectura.store');
 Route::post('/home/lectura/buscar', 'LecturaController@buscar')->name('lectura.buscar');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

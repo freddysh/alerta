@@ -4,7 +4,7 @@
 {{-- <li class="breadcrumb-item"><a href="#">Lista</a></li> --}}
 <li class="breadcrumb-item active" aria-current="page">Editar</li>
 @endsection
-@section('contenido')
+@section('content')
     <div class="card">
         <div class="card-header"><h3>EDITAR PLANTA</h3></div>
         <div class="card-body">

@@ -163,7 +163,7 @@
                         </nav>
                     </div>
                 </div>
-                    @yield('contenido')
+                    @yield('content')
                 </div>
 
 
