@@ -1,9 +1,22 @@
 @php
     function fecha_peru($fecha){
-        $valores=explode(' ',$fecha);
-        $fecha=explode('-',$valores[0]);
-        return $fecha[2].'-'.$fecha[1].'-'.$fecha[0].' '.$valores[1];
+        if(trim($fecha)>0){
+            $fecha=explode('-',$fecha);
+            return $fecha[2].'-'.$fecha[1].'-'.$fecha[0];
+        }
+        else
+            return '';
     }
+    function fecha_peru_datetime($fecha){
+        if(trim($fecha)>0){
+            $valores=explode(' ',$fecha);
+            $fecha=explode('-',$valores[0]);
+            return $fecha[2].'-'.$fecha[1].'-'.$fecha[0].' '.$valores[1];
+        }
+        else
+            return '';
+    }
+
 @endphp
 @extends('layouts.app')
 @section('breadcrumb')
@@ -47,7 +60,7 @@
                                                             $ultimo_rango='';
                                                             $current_rango='';
                                                         @endphp
-                                                        @if ($lecturas->sortByDesc('id')->first()->rango_lectura)
+                                                        @if ($lecturas->count()>0)
                                                             @php
                                                                 $ultimo_rango=$lecturas->sortByDesc('id')->first()->rango_lectura;
                                                                 if($ultimo_rango==$componente->primera_lectura){
@@ -68,12 +81,22 @@
                                                         <div class="col-lg-4 col-md-12 col-sm-12"><b>Acometida</b>:{{ $componente->acometida_alimentador }}</div>
                                                         <div class="col-lg-4 col-md-12 col-sm-12"><b>Rango de 1ra lectura</b>:[{{ $componente->primera_lectura }}]</div>
                                                         <div class="col-lg-4 col-md-12 col-sm-12"><b>Rango de 2da lectura</b>:[{{ $componente->segunda_lectura }}]</div>
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 bg-primary text-white"><b>Ultima lectura: {{ fecha_peru($lecturas->sortByDesc('id')->first()->fecha_lectura) }}, dentro del rango [ {{ $lecturas->sortByDesc('id')->first()->rango_lectura  }} ]</b></div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 bg-primary text-white"><b>Ultima lectura: @if($ultimo_rango!='') {{ fecha_peru_datetime($lecturas->sortByDesc('id')->first()->fecha_lectura) }} @endif, dentro del rango [ @if($ultimo_rango!='') {{ $lecturas->sortByDesc('id')->first()->rango_lectura  }}@endif ]</b></div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <hr size="30">
                                             <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <label for="anio">Año</label>
+                                                        <select class="form-control" id="anio" name="anio">
+                                                            @for($i=date("Y");$i>=date("Y")-10;$i--)
+                                                                <option value="{{ $i }}">{{ $i }}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-4">
                                                     <div class="form-group">
                                                     <label for="fecha_lectura">RANGO LECTURA</label>
@@ -146,53 +169,49 @@
                 <hr size="30">
                 <div class="row">
                     <div class="col">
-                        <h3>2 DATOS</h3>
+                        <h3>2 LECTURAS</h3>
+                        <table class="table table-stripe table-sm table-bordered text-11">
+                            <thead>
+                                <tr class="bg-primary text-white">
+                                    <th class="w-25">#</th>
+                                    <th class="w-50">FECHA INGRESADA</th>
+                                    <th class="w-50">FECHA</th>
+                                    <th class="w-25">IR</th>
+                                    <th class="w-25">IS</th>
+                                    <th class="w-25">IT</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $i=0;
+                                @endphp
+                                @foreach ($lecturas->sortBy('fecha_lectura_grafica') as $lectura)
+                                @php
+                                    $i++;
+                                @endphp
+                                    <tr id="lista_{{ $lectura->id }}">
+                                        <td>{{ $i }}</td>
+                                        <td>{{ fecha_peru_datetime($lectura->fecha_lectura) }}</td>
+                                        <td>{{ fecha_peru($lectura->fecha_lectura_grafica) }}</td>
+                                        <td>{{ $lectura->i_r }}</td>
+                                        <td>{{ $lectura->i_s }}</td>
+                                        <td>{{ $lectura->i_t }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h4>LECTURAS</h4>
-                            <table class="table table-stripe table-sm table-bordered text-11">
-                                <thead>
-                                    <tr class="bg-primary text-white">
-                                        <th class="w-25">#</th>
-                                        <th class="w-25">RANGO</th>
-                                        <th class="w-50">FECHA</th>
-                                        <th class="w-25">IR</th>
-                                        <th class="w-25">IS</th>
-                                        <th class="w-25">IT</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                        $i=0;
-                                    @endphp
-                                    @foreach ($lecturas as $lectura)
-                                    @php
-                                        $i++;
-                                    @endphp
-                                        <tr id="lista_{{ $lectura->id }}">
-                                            <td>{{ $i }}</td>
-                                            <td>01-{{ explode('-',$lectura->rango_lectura)[1] }}-{{ $lectura->anio }}</td>
-                                            <td>{{ fecha_peru($lectura->fecha_lectura) }}</td>
-                                            <td>{{ $lectura->i_r }}</td>
-                                            <td>{{ $lectura->i_s }}</td>
-                                            <td>{{ $lectura->i_t }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <h4>GRAFICA</h4>
-                            <div id="temps_div"></div>
+                <hr size="30">
+                <div class="row">
+                    <div class="col">
+                        <h3>3 GRAFICA</h3>
+                        <div id="temps_div"></div>
                             @php
                                 // \Lava::render('LineChart', 'Temps', 'temps_div')
                             @endphp
                             {{--  // With Blade Templates  --}}
                             @linechart('Temps', 'temps_div')
-                        </div>
                     </div>
                 </div>
         </div>

@@ -16,6 +16,7 @@ class CreateLecturaTable extends Migration
         Schema::create('lectura', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->dateTime('fecha_lectura');
+            $table->date('fecha_lectura_grafica');
             $table->decimal('i_r',5,2);
             $table->decimal('i_s',5,2);
             $table->decimal('i_t',5,2);

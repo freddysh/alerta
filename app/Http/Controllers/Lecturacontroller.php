@@ -44,6 +44,7 @@ class Lecturacontroller extends Controller
     public function store(Request $request,$id)
     {
         //
+        $anio=$request->input('anio');
         $rango_lectura=$request->input('rango_lectura');
         $ir=$request->input('ir');
         $is=$request->input('is');
@@ -51,7 +52,7 @@ class Lecturacontroller extends Controller
         $ruidos=$request->input('ruidos');
         $temperatura=$request->input('temperatura');
         $fecha=Carbon::now();
-
+// dd($rango_lectura);
         if(!is_numeric($ir)){
             if(strlen(intval($ir))>3){
                 return redirect()->back()->withInput($request->all())->with(['warning'=>'el numero no puede tener mas de 3 enteros']);
@@ -70,6 +71,7 @@ class Lecturacontroller extends Controller
             }
         }
         $lectura=new Lectura();
+        $lectura->fecha_lectura_grafica=$anio.'-'.explode('-',$rango_lectura)[1].'-01';
         $lectura->fecha_lectura=$fecha->toDateTimeString();
         $lectura->i_r=$ir;
         $lectura->i_s=$is;
@@ -77,7 +79,7 @@ class Lecturacontroller extends Controller
         $lectura->ruidos=$ruidos;
         $lectura->temperatura_menor_a=$temperatura;
         $lectura->rango_lectura=$rango_lectura;
-        $lectura->anio=$fecha->year;
+        $lectura->anio=$anio;
         $lectura->componente_id=$id;
         $lectura->autor_user_id=1;
         // $lectura->autor_user_id=Auth::user()->id;
@@ -110,9 +112,8 @@ class Lecturacontroller extends Controller
                     ->addNumberColumn('IT')
                     ->setTimezone('America/Lima');
 
-        foreach($lecturas as $lectura){
-            $fecha=$lectura->anio.'-'.explode('-',$lectura->rango_lectura)[1].'-01';
-            $temperatures->addRow([$fecha,  $lectura->i_r, $lectura->i_s, $lectura->i_t]);
+        foreach($lecturas->sortBy('fecha_lectura_grafica') as $lectura){
+            $temperatures->addRow([$lectura->fecha_lectura_grafica,  $lectura->i_r, $lectura->i_s, $lectura->i_t]);
         }
 
                     // ->addRow(['2017-10-01',  168, 165, 161])
