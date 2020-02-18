@@ -22,8 +22,8 @@ class LecturaController extends Controller
     public function index()
     {
         //
-        return view('admin.lectura.index');
 
+        return view('admin.lectura.index');
     }
 
     /**
