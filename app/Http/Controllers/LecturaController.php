@@ -23,6 +23,7 @@ class LecturaController extends Controller
     {
         //
         return view('admin.lectura.index');
+
     }
 
     /**
