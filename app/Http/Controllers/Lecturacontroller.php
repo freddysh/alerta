@@ -12,7 +12,7 @@ use Khill\Lavacharts\Lavacharts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Lecturacontroller extends Controller
+class LecturaController extends Controller
 {
     /**
      * Display a listing of the resource.
