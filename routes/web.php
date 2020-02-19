@@ -48,6 +48,7 @@ Route::post('/home/componente/store', 'ComponenteController@store')->name('compo
 Route::get('/home/componente/edit/{id}', 'ComponenteController@edit')->name('componente.edit');
 Route::put('/home/componente/update/{id}', 'ComponenteController@update')->name('componente.update');
 Route::get('/home/componente/destroy/{id}', 'ComponenteController@destroy')->name('componente.destroy');
+Route::get('/home/componente/export/{id}', 'ComponenteController@export')->name('componente.export');
 
 Route::get('/home/lectura', 'LecturaController@index')->name('lectura');
 Route::get('/home/lectura/{id}/show', 'LecturaController@show')->name('lectura.mostrar');

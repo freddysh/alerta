@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Componente;
 use App\Equipo;
+use App\Exports\ComponenteExport;
+use Maatwebsite\Excel\facades\Excel;
 use App\Planta;
 use App\Sistema;
+// use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade;
 use Illuminate\Http\Request;
 
 class ComponenteController extends Controller
@@ -126,5 +130,19 @@ class ComponenteController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function export($id)
+    {
+        //
+        $plantas=Planta::all();
+        $sistemas=Sistema::all();
+        $equipos=Equipo::all();
+        $componente=Componente::findOrfail($id);
+        // return view('admin.componente.edit',compact('plantas','sistemas','equipos','componente','id'));
+        // return (new ComponenteExport($plantas,$sistemas,$equipos,$componente,$id))->download('products.pdf', \Maatwebsite\Excel\Excel::MPDF);
+
+        $pdf = \PDF::loadView('admin.componente.export',compact('plantas','sistemas','equipos','componente','id'));
+        return $pdf->download('invoice.pdf');
     }
 }

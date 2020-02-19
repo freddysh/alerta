@@ -43,6 +43,7 @@
                             <td>{{ $componente->nombre }}</td>
                             <td>
                                 <div class="btn-group">
+                                    <a href="{{ route('componente.export',$componente->id) }}" class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i></a>
                                     <a href="{{ route('componente.edit',$componente->id) }}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                                     <form id="form_borrar_{{ $componente->id }}" action="{{ route('componente.destroy',$componente->id) }}" method="get">
                                         @csrf
